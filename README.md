@@ -1,7 +1,16 @@
-Họ tên sinh viên: Nguyen Quoc Bao
-
-
+🛒 HỆ THỐNG QUẢN LÝ SIÊU THỊ MINI (MINISUPERMARKET SYSTEM)Môn học: Lập trình Ứng dụng .NET Core (Mã môn: 229162)Buổi thực hành: Buổi 5 - ADO.NET Nâng cao, Stored Procedure và Giao dịch POS Checkout bảo vệ bởi SqlTransaction (ACID)🏗️ 1. Mô hình Kiến trúc Hệ thống (Client - Server)Buổi thực hành tối ưu hóa hiệu năng tầng dữ liệu và bảo vệ tính toàn vẹn nghiệp vụ thanh toán:MiniSupermarket.API (Backend): Sử dụng ADO.NET thuần cho các thao tác đòi hỏi tốc độ phản hồi cực nhanh. Áp dụng SqlDataReader cho luồng tra cứu mã vạch POS (Connected Mode), DataTable & SqlDataAdapter cho mô hình ngắt kết nối đệm dữ liệu (Disconnected Mode), thực thi Stored Procedure (sp_GetRevenueByCashier) cho báo cáo tổng hợp, và bọc kín quy trình thanh toán giỏ hàng POS đa bảng trong SqlTransaction đáp ứng trọn vẹn 4 đặc tính ACID.   MiniSupermarket.WinForms (Frontend Client): Tích hợp màn hình bán hàng FormPOS, gửi yêu cầu thanh toán JSON tới API và nhận phản hồi chi tiết hóa đơn.   🛠️ 2. Công nghệ Sử dụngNgôn ngữ: C# (.NET 8.0)   Backend: ASP.NET Core Web API, ADO.NET (Microsoft.Data.SqlClient), SqlConnection, SqlCommand, SqlParameter (Chống 100% SQL Injection), SqlDataReader, SqlDataAdapter, DataTable, SqlTransaction, Stored Procedures (T-SQL)   Frontend: Windows Forms (.NET 8.0), FormPOS, System.Net.Http.Json   Công cụ CSDL & Kiểm thử: SQL Server Management Studio (SSMS), Swagger UI   📂 3. Cấu trúc SolutionPlaintextMiniSupermarketSystem/
+│
+├── MiniSupermarket.API/                   # Dự án Web API (Backend)
+│   ├── Controllers/                       # Controllers chuyên trách ADO.NET & Transaction
+│   │   ├── AdoProductController.cs        # Tra cứu mã vạch siêu tốc (SqlDataReader) & Disconnected Cache (DataTable)
+│   │   ├── ReportsController.cs           # Thực thi Stored Procedure sp_GetRevenueByCashier kết xuất báo cáo ca
+│   │   └── CheckoutController.cs          # API Thanh toán POS đa bảng bọc kín trong SqlTransaction (Commit/Rollback)
+│   └── Models/                            # Chứa CheckoutDtos.cs (CheckoutRequestDto, CartItemCheckoutDto, CashierRevenueDto)
+│
+└── MiniSupermarket.WinForms/              # Dự án Windows Forms (Frontend Client)
+    └── FormPOS.cs                         # Giao diện quầy bán hàng POS quét mã vạch và thanh toán
+🚀 4. Hướng dẫn Chạy và Kiểm thử Dự ánBước 1: Chuẩn bị Stored Procedure trên SQL ServerMở SSMS, kết nối tới CSDL MiniSupermarketDb.   Mở file Script T-SQL tạo thủ tục sp_GetRevenueByCashier và nhấn Execute (F5) để khởi tạo thủ tục lưu trữ trên máy chủ.   Bước 2: Chạy và Kiểm thử các Kịch bản trên Swagger UIChạy project MiniSupermarket.API (F5).   Kiểm thử Tra cứu Barcode: Mở GET /api/ado-products/barcode/893456789001 $\rightarrow$ Nhận phản hồi thông tin sản phẩm tức thì (< 100ms).   Kiểm thử Báo cáo Stored Procedure: Mở GET /api/reports/revenue-by-cashier $\rightarrow$ Nhận danh sách tổng hợp doanh thu theo từng thu ngân.   Kiểm thử Giao dịch POS (Kịch bản Commit thành công): Mở POST /api/checkout, nhập giỏ hàng với số lượng hợp lệ $\rightarrow$ Trả về mã 200 OK, kiểm tra SSMS thấy đơn hàng được tạo, tồn kho được trừ và khách hàng được cộng điểm.   Kiểm thử Giao dịch POS (Kịch bản Rollback khi hết hàng): Nhập giỏ hàng có 1 sản phẩm số lượng vượt quá tồn kho (VD: mua 999 hộp Danisa) $\rightarrow$ Trả về lỗi 400 BadRequest, kiểm tra SSMS xác nhận không có dữ liệu rác nào được tạo (Rollback an toàn 100%).   
+👨‍💻 5. Tác giả
+Họ tên sinh viên: Nguyễn Quốc Bảo
 Mã sinh viên: 2124110087
-
-
-Lớp học phần CCQ2411C
+Lớp học phần: CCQ2411C
