@@ -1,7 +1,14 @@
-Họ tên sinh viên: Nguyen Quoc Bao
-
-
+🛒 HỆ THỐNG QUẢN LÝ SIÊU THỊ MINI (MINISUPERMARKET SYSTEM)Môn học: Lập trình Ứng dụng .NET Core (Mã môn: 229162)Buổi thực hành: Buổi 6 - Entity Framework Core Nâng cao, Phân trang LINQ Server-Side và Tích hợp Toàn diện Hệ thống POS Client - Server🏗️ 1. Mô hình Kiến trúc Hệ thống (Client - Server)Buổi thực hành hoàn thiện việc kết nối toàn diện giữa Client và Server cùng kỹ thuật tối ưu bộ nhớ:MiniSupermarket.API (Backend): Triển khai thuật toán Phân trang dữ liệu tại máy chủ (Server-side Pagination) bằng các toán tử LINQ .Skip() và .Take() kết hợp .AsNoTracking(). Áp dụng kỹ thuật Eager Loading (.Include()) để tải trước dữ liệu thực thể quan hệ (như tên nhóm hàng CategoryName), giải quyết triệt để lỗi N+1 Query. Trả về DTO đóng gói Metadata chuẩn (CurrentPage, PageSize, TotalItems, TotalPages, Items).   MiniSupermarket.WinForms (Frontend Client): Xây dựng lớp dịch vụ dùng chung ApiClientService quản lý HttpClient tập trung. Hoàn thiện màn hình FormProductManagement hỗ trợ tìm kiếm từ khóa, ComboBox chọn danh mục, bộ nút chuyển trang linh hoạt (<< Trang trước, Trang sau >>) và các thao tác CRUD gọi trực tiếp tới Web API.   🛠️ 2. Công nghệ Sử dụngNgôn ngữ: C# (.NET 8.0)   Backend: ASP.NET Core Web API, EF Core 8.0, LINQ Server-side Paging (Skip, Take, CountAsync), Eager Loading (Include), Generic Paged Result DTO   Frontend: Windows Forms (.NET 8.0), ApiClientService, System.Net.Http.Json, DataGridView Pagination Controls   Công cụ kiểm thử: Swagger UI, Visual Studio Output (Đối soát T-SQL OFFSET FETCH)   📂 3. Cấu trúc SolutionPlaintextMiniSupermarketSystem/
+│
+├── MiniSupermarket.API/                   # Dự án Web API (Backend)
+│   ├── Controllers/                       # ProductsController (Bổ sung Action /api/products/paged)
+│   └── Models/                            # PagedResponseDto.cs (ProductItemDto, PagedResult<T>)
+│
+└── MiniSupermarket.WinForms/              # Dự án Windows Forms (Frontend Client)
+    ├── Services/                          # ApiClientService.cs (Quản lý HttpClient & Bearer Token)
+    └── FormProductManagement.cs          # Giao diện quản lý sản phẩm phân trang, tìm kiếm & CRUD hoàn chỉnh
+🚀 4. Hướng dẫn Chạy và Kiểm thử Dự ánBước 1: Kiểm thử API Phân trang phia BackendKhởi chạy MiniSupermarket.API (Ctrl + F5).   Mở Swagger UI, tìm đến GET /api/products/paged.   Bấm Try it out, nhập pageNumber = 1, pageSize = 5, bấm Execute.   Kiểm tra JSON trả về hiển thị đúng 5 sản phẩm đầu tiên kèm tên nhóm hàng CategoryName (không bị null) và đầy đủ thông tin Metadata tổng số trang.   Quan sát cửa sổ Output của Visual Studio để xác nhận EF Core dịch LINQ thành mệnh đề T-SQL OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY.   Bước 2: Kiểm thử Phân trang & CRUD trên WinForms ClientKhởi chạy MiniSupermarket.WinForms.   Mở màn hình Quản lý Sản phẩm (FormProductManagement).   Kiểm tra dữ liệu tự động đổ vào ComboBox Nhóm hàng và hiển thị 5 sản phẩm đầu tiên trên DataGridView.   Bấm các nút Trang sau >> và << Trang trước để kiểm tra trải nghiệm chuyển trang mượt mà.   Nhập từ khóa vào ô Tìm kiếm và bấm Tìm để xác nhận hệ thống lọc dữ liệu và tự động tính lại tổng số trang.   Thực hiện các thao tác Thêm mới, Cập nhật, Xóa sản phẩm và kiểm tra sự đồng bộ dữ liệu về SQL Server.   
+👨‍💻 5. Tác giả
+Họ tên sinh viên: Nguyễn Quốc Bảo
 Mã sinh viên: 2124110087
-
-
-Lớp học phần CCQ2411C
+Lớp học phần: CCQ2411C
